@@ -1,16 +1,16 @@
-#ifndef NODE_H
-#define NODE_H
+#ifndef NODEH_H
+#define NODEH_H
 
 #include <cstddef>
 
-struct Node{
+struct NodeH{
     int key;
     int height;
-    Node* left;
-    Node* right;
+    NodeH* left;
+    NodeH* right;
 
 
-    Node(int k){
+    NodeH(int k){
         key = k;
         left = right = NULL;
         height = 0;

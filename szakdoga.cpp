@@ -3,14 +3,20 @@
 #include "avltreeh.h"
 
 int main(){
-    Node* tmp = NULL;
+    NodeH* tmp = NULL;
     AvlTreeH treeMaker;
-    treeMaker.insert(20,tmp);
-    treeMaker.insert(15,tmp);
-    treeMaker.insert(0,tmp);
-    treeMaker.insert(1325,tmp);
-    treeMaker.insert(-15,tmp);
-    treeMaker.insert(120,tmp);
+    // treeMaker.insert(tmp,-15);
+    // treeMaker.insert(tmp,0);
+    // treeMaker.insert(tmp,15);
+    // treeMaker.insert(tmp,20);
+    // treeMaker.insert(tmp,120);
+    // treeMaker.insert(tmp,1325);
+    treeMaker.insert(tmp,20);
+    treeMaker.insert(tmp,15);
+    treeMaker.insert(tmp,0);
+    treeMaker.insert(tmp,1325);
+    treeMaker.insert(tmp,-15);
+    treeMaker.insert(tmp,120);
     treeMaker.print(tmp);
     return 0;
 }
