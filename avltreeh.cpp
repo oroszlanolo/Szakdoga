@@ -13,7 +13,6 @@ void AvlTreeH::insert(Tree &t, int k){
         insert(t->left,k);
         t->height = 1 + std::max(height(t->left),height(t->right));
         if(height(t->right) - height(t->left) == -2){
-        // std::cout << "insert:" << k;
             leftBalance(t);
         }
     }else{
@@ -24,6 +23,76 @@ void AvlTreeH::insert(Tree &t, int k){
         }
     }
 
+}
+
+bool AvlTreeH::del(Tree &t, int k){
+    if(t == NULL){
+        return false;
+    }
+
+    if(t->key > k){
+        if(del(t->left,k)){
+            //t->right >= t->left
+            if(height(t->right) - height(t->left) == 2){
+                rightBalance(t);
+            }else{
+                t->height = height(t->right) + 1;
+            }
+            return true;
+        }
+    }else if(t->key < k){
+        if(del(t->right,k)){
+            //t->left >= t->right
+            if(height(t->right) - height(t->left) == -2){
+                leftBalance(t);
+            }else{
+                t->height = height(t->left) + 1;
+            }
+            return true;
+        }
+    }else if(t->key == k){
+        rootDel(t);
+
+        return true;
+    }
+    return false;
+}
+
+void AvlTreeH::rootDel(Tree &t){
+    if(t->left == NULL){
+        Tree p = t;
+        t = p->right;
+        delete p;
+    }else if(t->right == NULL){
+        Tree p = t;
+        t = p->left;
+        delete p;
+    }else{
+        Tree p;
+        getMin(t->right,p);
+        p->left = t->left;
+        p->right = t->right;
+        p->height = t->height;
+        t->left = t->right = NULL;
+        delete t;
+        t = p;
+    }
+}
+
+
+void AvlTreeH::getMin(Tree &t, Tree &minP){
+    if(t->left == NULL){
+        minP = t;
+        t = minP->right;
+        minP->right = NULL;
+    }else{
+        getMin(t->left,minP);
+        if(height(t->left) - height(t->right) == 2){
+            rightBalance(t);
+        }else{
+            t->height = height(t->right) + 1;
+        }
+    }
 }
 
 void AvlTreeH::rightBalance(Tree &t){
