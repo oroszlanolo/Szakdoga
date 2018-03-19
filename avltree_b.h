@@ -12,18 +12,25 @@ class AvlTreeB{
 public:
     bool insert(Tree &, int);
     bool del(Tree &, int);
-    void rootDel(Tree &);
-    void getMin(Tree &, Tree &);
+    bool rootDel(Tree &);
+    bool getMin(Tree &, Tree &);
     void print(Tree &);
     bool leftTreeGrow(Tree &);
     bool rightTreeGrow(Tree &);
+    bool leftTreeShrink(Tree &);
+    bool rightTreeShrink(Tree &);
+    bool rightTreeMinToRoot(Tree &);
     
     //  M   -   minus
     //  P   -   plus
+    bool balancePP(Tree &);
+    bool balanceMM(Tree &);
     void balanceMMm(Tree &, Tree);
     void balanceMMp(Tree &, Tree);
     void balancePPm(Tree &, Tree);
     void balancePPp(Tree &, Tree);
+    void balancePP0(Tree &, Tree);
+    void balanceMM0(Tree &, Tree);
 };
 
 #endif

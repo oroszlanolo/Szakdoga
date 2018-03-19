@@ -13,10 +13,10 @@ int main(){
     treeMaker.insert(tmp,120);
     treeMaker.print(tmp);
     std::cout << std::endl;
-    // treeMaker.del(tmp,0);
-    // treeMaker.print(tmp);
-    // std::cout << std::endl;
-    // treeMaker.del(tmp,-15);
-    // treeMaker.print(tmp);
+    treeMaker.del(tmp,0);
+    treeMaker.print(tmp);
+    std::cout << std::endl;
+    treeMaker.del(tmp,-15);
+    treeMaker.print(tmp);
     return 0;
 }
