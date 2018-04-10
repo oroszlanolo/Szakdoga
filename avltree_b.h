@@ -3,34 +3,34 @@
 
 #include "node_b.h"
 
-typedef struct NodeB * Tree;
+typedef struct NodeB * TreeB;
 
 /**
- *AVL Tree - storing the heights in every node 
+ *AVL TreeB - storing the heights in every node 
  */
 class AvlTreeB{
 public:
-    bool insert(Tree &, int);
-    bool del(Tree &, int);
-    bool rootDel(Tree &);
-    bool getMin(Tree &, Tree &);
-    void print(Tree &);
-    bool leftTreeGrow(Tree &);
-    bool rightTreeGrow(Tree &);
-    bool leftTreeShrink(Tree &);
-    bool rightTreeShrink(Tree &);
-    bool rightTreeMinToRoot(Tree &);
+    bool insert(TreeB &, int);
+    bool del(TreeB &, int);
+    bool rootDel(TreeB &);
+    bool getMin(TreeB &, TreeB &);
+    void print(TreeB &);
+    bool leftTreeGrow(TreeB &);
+    bool rightTreeGrow(TreeB &);
+    bool leftTreeShrink(TreeB &);
+    bool rightTreeShrink(TreeB &);
+    bool rightTreeMinToRoot(TreeB &);
     
     //  M   -   minus
     //  P   -   plus
-    bool balancePP(Tree &);
-    bool balanceMM(Tree &);
-    void balanceMMm(Tree &, Tree);
-    void balanceMMp(Tree &, Tree);
-    void balancePPm(Tree &, Tree);
-    void balancePPp(Tree &, Tree);
-    void balancePP0(Tree &, Tree);
-    void balanceMM0(Tree &, Tree);
+    bool balancePP(TreeB &);
+    bool balanceMM(TreeB &);
+    void balanceMMm(TreeB &, TreeB);
+    void balanceMMp(TreeB &, TreeB);
+    void balancePPm(TreeB &, TreeB);
+    void balancePPp(TreeB &, TreeB);
+    void balancePP0(TreeB &, TreeB);
+    void balanceMM0(TreeB &, TreeB);
 };
 
 #endif
