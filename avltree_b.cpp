@@ -1,97 +1,143 @@
 #include <iostream>
 #include <cstddef>
+#include <stdlib.h>
 #include "avltree_b.h"
 #include "node_b.h"
 
-bool AvlTreeB::insert(TreeB &t, int k){
-    if(t == NULL){
+bool AvlTreeB::insert(TreeB &t, int k)
+{
+    if(t == NULL)
+    {
         t = new NodeB(k);
         return true;
     }
-    if(k < t->key){
+    if(k < t->key)
+    {
         // d = insert(t->left, k)
-        if(insert(t->left, k)){
+        if(insert(t->left, k))
+        {
             // d = leftTreeGrow(t)
             return leftTreeGrow(t);
-        }else{
+        }else
+        {
             // d = false
             return false;
         }
-    }else if(k > t->key){
+    }else if(k > t->key)
+    {
         // d = insert(t->right, k)
-        if(insert(t->right, k)){
+        if(insert(t->right, k))
+        {
             // d = rightTreeGrow(t)
             return rightTreeGrow(t);
-        }else{
+        }else
+        {
             // d = false
             return false;
         }
-    }else{
+    }else
+    {
         //d = false;
         return false;
     }
 }
 
-bool AvlTreeB::del(TreeB &t, int k){
-    if(t == NULL){
+bool AvlTreeB::del(TreeB &t, int k)
+{
+    if(t == NULL)
+    {
         return false;
     }
-    if(k < t->key){
-        if(del(t->left,k)){
+    if(k < t->key)
+    {
+        if(del(t->left,k))
+        {
             return leftTreeShrink(t);
-        }else{
+        }else
+        {
             return false;
         }
 
-    }else if(k > t->key){
-        if(del(t->right,k)){
+    }else if(k > t->key)
+    {
+        if(del(t->right,k))
+        {
             return rightTreeShrink(t);
-        }else{
+        }else
+        {
             return false;
         }
-    }else{
+    }else
+    {
         return rootDel(t);
     }
 }
 
-bool AvlTreeB::rootDel(TreeB &t){
-    if(t->left == NULL){
+bool AvlTreeB::rootDel(TreeB &t)
+{
+    if(t->left == NULL)
+    {
         TreeB p = t;
         t = p->right;
-        delete p;
+        free(p);
         return true;
-    }else if(t->right == NULL){
+    }else if(t->right == NULL)
+    {
         TreeB p = t;
         t = p->left;
-        delete p;
+        free(p);
         return true;
-    }else{
-        if(rightTreeMinToRoot(t)){
+    }else
+    {
+        if(rightTreeMinToRoot(t))
+        {
             return rightTreeShrink(t);
-        }else{
+        }else
+        {
             return false;
         }
     }
 }
 
+TreeB AvlTreeB::getNode(TreeB t, int k)
+{
+    TreeB ret = t;
+    while(ret != NULL && ret->key != k)
+    {
+        if(k < ret->key)
+        {
+            ret = ret->left;
+        }else
+        {
+            ret = ret->right;
+        }
+    }
+    return ret;
+}
 
-bool AvlTreeB::getMin(TreeB &t, TreeB &minP){
-    if(t->left == NULL){
+
+bool AvlTreeB::getMin(TreeB &t, TreeB &minP)
+{
+    if(t->left == NULL)
+    {
         minP = t;
         t = minP->right;
         minP->right = NULL;
         return true;
-    }else{
-        if(getMin(t->left,minP)){
-            leftTreeShrink(t);
-            return true;
-        }else{
+    }else
+    {
+        if(getMin(t->left,minP))
+        {
+            return leftTreeShrink(t);
+        }else
+        {
             return false;
         }
     }
 }
 
-bool AvlTreeB::rightTreeMinToRoot(TreeB &t){
+bool AvlTreeB::rightTreeMinToRoot(TreeB &t)
+{
     TreeB p = NULL;
     bool d = getMin(t->right,p);
 
@@ -100,57 +146,72 @@ bool AvlTreeB::rightTreeMinToRoot(TreeB &t){
     p->balance = t->balance;
 
     t->left = t->right = NULL;
-    delete t;
+    free(t);
     t = p;
 
     return d;
 }
 
-bool AvlTreeB::leftTreeGrow(TreeB &t){
-    if(t->balance == -1){
+bool AvlTreeB::leftTreeGrow(TreeB &t)
+{
+    if(t->balance == -1)
+    {
         TreeB l = t->left;
-        if(l->balance == -1){
+        if(l->balance == -1)
+        {
             balanceMMm(t,l);
-        }else{
+        }else
+        {
             balanceMMp(t,l);
         }
         // d = false
         return false;
-    }else{
+    }else
+    {
         --t->balance;
         // d = (t->balance < 0)
         return t->balance < 0;
     }
 }
-bool AvlTreeB::rightTreeGrow(TreeB &t){
-    if(t->balance == 1){
+bool AvlTreeB::rightTreeGrow(TreeB &t)
+{
+    if(t->balance == 1)
+    {
         TreeB r = t->right;
-        if(r->balance == 1){
+        if(r->balance == 1)
+        {
             balancePPp(t,r);
         }else{
             balancePPm(t,r);
         }
         return false;
-    }else{
+    }else
+    {
         ++t->balance;
         return t->balance > 0;
     }
 }
 
-bool AvlTreeB::leftTreeShrink(TreeB &t){
-    if(t->balance == 1){
+bool AvlTreeB::leftTreeShrink(TreeB &t)
+{
+    if(t->balance == 1)
+    {
         return balancePP(t);
-    }else{
+    }else
+    {
         ++t->balance;
         return t->balance == 0;
     }
 }
 
-bool AvlTreeB::rightTreeShrink(TreeB &t){
-    if(t->balance == -1){
+bool AvlTreeB::rightTreeShrink(TreeB &t)
+{
+    if(t->balance == -1)
+    {
         return balanceMM(t);
-    }else{
-        ++t->balance;
+    }else
+    {
+        --t->balance;
         return t->balance == 0;
     }
 }
@@ -159,10 +220,12 @@ bool AvlTreeB::rightTreeShrink(TreeB &t){
 //  BALANCE functiions
 
 
-bool AvlTreeB::balancePP(TreeB &t){
+bool AvlTreeB::balancePP(TreeB &t)
+{
     TreeB r = t->right;
     bool d = true;
-    switch(r->balance){
+    switch(r->balance)
+    {
         case -1:
             balancePPm(t,r);
             break;
@@ -176,10 +239,12 @@ bool AvlTreeB::balancePP(TreeB &t){
     }
     return d;
 }
-bool AvlTreeB::balanceMM(TreeB &t){
+bool AvlTreeB::balanceMM(TreeB &t)
+{
     TreeB l = t->left;
     bool d = true;
-    switch(l->balance){
+    switch(l->balance)
+    {
         case -1:
             balanceMMm(t,l);
             break;
@@ -193,13 +258,15 @@ bool AvlTreeB::balanceMM(TreeB &t){
     }
     return d;
 }
-void AvlTreeB::balanceMMm(TreeB &t, TreeB l){
+void AvlTreeB::balanceMMm(TreeB &t, TreeB l)
+{
     t->left = l->right;
     l->right = t;
     l->balance = t->balance = 0;
     t = l;
 }
-void AvlTreeB::balanceMMp(TreeB &t, TreeB l){
+void AvlTreeB::balanceMMp(TreeB &t, TreeB l)
+{
     TreeB r = l->right;
     l->right = r->left;
     t->left = r->right;
@@ -210,7 +277,8 @@ void AvlTreeB::balanceMMp(TreeB &t, TreeB l){
     r->balance = 0;
     t = r;
 }
-void AvlTreeB::balancePPm(TreeB &t, TreeB r){
+void AvlTreeB::balancePPm(TreeB &t, TreeB r)
+{
     TreeB l = r->left;
     t->right = l->left;
     r->left = l->right;
@@ -221,13 +289,15 @@ void AvlTreeB::balancePPm(TreeB &t, TreeB r){
     l->balance = 0;
     t = l;
 }
-void AvlTreeB::balancePPp(TreeB &t, TreeB r){
+void AvlTreeB::balancePPp(TreeB &t, TreeB r)
+{
     t->right = r->left;
     r->left = t;
     r->balance = t->balance = 0;
     t = r;
 }
-void AvlTreeB::balancePP0(TreeB &t, TreeB r){
+void AvlTreeB::balancePP0(TreeB &t, TreeB r)
+{
     t->right = r->left;
     r->left = t;
 
@@ -235,7 +305,8 @@ void AvlTreeB::balancePP0(TreeB &t, TreeB r){
     r->balance = -1;
     t = r;
 }
-void AvlTreeB::balanceMM0(TreeB &t, TreeB l){
+void AvlTreeB::balanceMM0(TreeB &t, TreeB l)
+{
     t->left = l->right;
     l->right = t;
 
@@ -246,16 +317,20 @@ void AvlTreeB::balanceMM0(TreeB &t, TreeB l){
 
 
 
-void AvlTreeB::print(TreeB &t){
-    if(t == NULL){
+void AvlTreeB::print(TreeB t)
+{
+    if(t == NULL)
+    {
         std::cout << "Empty tree" << std::endl;
         return;
     }
-    if(t->left != NULL){
+    if(t->left != NULL)
+    {
         print(t->left);
     }
     std::cout << t->balance << ":" <<  t->key << ", ";
-    if(t->right != NULL){
+    if(t->right != NULL)
+    {
         print(t->right);
     }
 }

@@ -17,6 +17,11 @@ struct NodeH
         left = right = NULL;
         height = 0;
     }
+    ~NodeH()
+    {
+        delete left;
+        delete right;
+    }
 };
 
 

@@ -12,9 +12,12 @@ class AvlTreeB{
 public:
     bool insert(TreeB &, int);
     bool del(TreeB &, int);
-    bool rootDel(TreeB &);
     bool getMin(TreeB &, TreeB &);
-    void print(TreeB &);
+    void print(TreeB);
+    TreeB getNode(TreeB, int);
+
+private:
+    bool rootDel(TreeB &);
     bool leftTreeGrow(TreeB &);
     bool rightTreeGrow(TreeB &);
     bool leftTreeShrink(TreeB &);

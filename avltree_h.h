@@ -13,10 +13,12 @@ class AvlTreeH
 public:
     void insert(Tree &, int);
     bool del(Tree &, int);
-    void rootDel(Tree &);
     void getMin(Tree &, Tree &);
-    void print(Tree &);
+    void print(Tree);
+    Tree getNode(Tree, int);
+private:
     int height(Tree);
+    void rootDel(Tree &);
     void rightBalance(Tree &);
     void leftBalance(Tree &);
 };

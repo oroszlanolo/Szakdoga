@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstddef>
+#include <stdlib.h>
 #include "avltree_h.h"
 #include "node_h.h"
 
@@ -14,6 +15,7 @@ void AvlTreeH::insert(Tree &t, int k)
     if(k < t->key)
     {
         insert(t->left,k);
+        //TODO : T kiszámítása az else ágban
         t->height = 1 + std::max(height(t->left),height(t->right));
         if(height(t->right) - height(t->left) == -2){
             leftBalance(t);
@@ -43,11 +45,10 @@ bool AvlTreeH::del(Tree &t, int k)
     {
         if(del(t->left,k))
         {
-            //t->right >= t->left
             if(height(t->right) - height(t->left) == 2){
                 rightBalance(t);
             }else{
-                t->height = height(t->right) + 1;
+                t->height = std::max(height(t->right),height(t->left)) + 1;
             }
             return true;
         }
@@ -55,18 +56,16 @@ bool AvlTreeH::del(Tree &t, int k)
     {
         if(del(t->right,k))
         {
-            //t->left >= t->right
             if(height(t->right) - height(t->left) == -2){
                 leftBalance(t);
             }else{
-                t->height = height(t->left) + 1;
+                t->height = std::max(height(t->right),height(t->left)) + 1;
             }
             return true;
         }
     }else if(t->key == k)
     {
         rootDel(t);
-
         return true;
     }
     return false;
@@ -78,22 +77,25 @@ void AvlTreeH::rootDel(Tree &t)
     {
         Tree p = t;
         t = p->right;
-        delete p;
+        free(p);
     }else if(t->right == NULL)
     {
         Tree p = t;
         t = p->left;
-        delete p;
+        free(p);
     }else
     {
         Tree p;
         getMin(t->right,p);
         p->left = t->left;
         p->right = t->right;
-        p->height = t->height;
+        p->height = 1 + std::max(height(t->left),height(t->right));
         t->left = t->right = NULL;
-        delete t;
+        free(t);
         t = p;
+        if(height(t->right) - height(t->left) == -2){
+            leftBalance(t);
+        }
     }
 }
 
@@ -105,17 +107,33 @@ void AvlTreeH::getMin(Tree &t, Tree &minP)
         minP = t;
         t = minP->right;
         minP->right = NULL;
+        return;
     }else
     {
         getMin(t->left,minP);
-        if(height(t->left) - height(t->right) == 2)
+        if(height(t->right) - height(t->left) == 2)
         {
             rightBalance(t);
         }else
         {
-            t->height = height(t->right) + 1;
+            t->height = std::max(height(t->right),height(t->left)) + 1;
         }
     }
+}
+Tree AvlTreeH::getNode(Tree t, int k)
+{
+    Tree ret = t;
+    while(ret != NULL && ret->key != k)
+    {
+        if(k < ret->key)
+        {
+            ret = ret->left;
+        }else
+        {
+            ret = ret->right;
+        }
+    }
+    return ret;
 }
 
 void AvlTreeH::rightBalance(Tree &t)
@@ -185,7 +203,7 @@ void AvlTreeH::leftBalance(Tree &t)
     }
 }
 
-void AvlTreeH::print(Tree &t)
+void AvlTreeH::print(Tree t)
 {
     if(t == NULL)
     {

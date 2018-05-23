@@ -3,17 +3,24 @@
 
 #include <cstddef>
 
-struct NodeB{
+struct NodeB
+{
     int key;
     int balance;
     NodeB* left;
     NodeB* right;
 
 
-    NodeB(int k){
+    NodeB(int k)
+    {
         key = k;
         left = right = NULL;
         balance = 0;
+    }
+    ~NodeB()
+    {
+        delete left;
+        delete right;
     }
 };
 
